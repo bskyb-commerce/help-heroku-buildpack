@@ -22,8 +22,7 @@ class LanguagePack::Ruby < LanguagePack::Base
   DEFAULT_RUBY_VERSION = "ruby-2.0.0"
   RBX_BASE_URL         = "http://binaries.rubini.us/heroku"
   NODE_BP_PATH         = "vendor/node/bin"
-  CMAKE_BASE_URL       = "http://www.cmake.org/files/"
-  CMAKE_MINOR_VERSION  = "v2.8"
+  CMAKE_BASE_URL       = "http://www.cmake.org/files/v2.8"
   CMAKE_PATCH_VERSION  = "2.8.12.2"
   CMAKE_PATH           = "vendor/cmake/bin"
 
@@ -348,7 +347,7 @@ WARNING
       FileUtils.mkdir_p(slug_vendor_cmake)
       Dir.chdir(slug_vendor_cmake) do
         instrument "ruby.fetch_cmake" do
-          @fetchers[:cmake].fetch_untar("#{CMAKE_MINOR_VERSION}/cmake-#{CMAKE_PATCH_VERSION}.tar.gz")
+          @fetchers[:cmake].fetch_untar("cmake-#{CMAKE_PATCH_VERSION}.tar.gz")
         end
       end
       error "Couldn't fetch cmake (#{CMAKE_MINOR_VERSION}/cmake-#{CMAKE_PATCH_VERSION}.tar.gz)!" unless $?.success?
