@@ -349,15 +349,17 @@ WARNING
         instrument "ruby.fetch_cmake" do
           @fetchers[:cmake].fetch_untar("cmake-#{CMAKE_VERSION}-Linux-i386.tar.gz")
 
-          system("chmod +x cmake-#{CMAKE_VERSION}-Linux-i386/bin/*")
+          system("chmod ug+x cmake-#{CMAKE_VERSION}-Linux-i386/bin/*")
         end
       end
       error "Couldn't fetch cmake (cmake-#{CMAKE_VERSION}-Linux-i386.tar.gz)!" unless $?.success?
 
-      out = `ls -l #{slug_vendor_cmake}/cmake-#{CMAKE_VERSION}-Linux-i386/bin`
-      topic "Done! Cmake path: #{slug_vendor_cmake}/cmake-#{CMAKE_VERSION}-Linux-i386/bin\n #{out}"
+      path = File.expand_path("#{slug_vendor_cmake}/cmake-#{CMAKE_VERSION}-Linux-i386/bin")
 
-      out = `#{slug_vendor_cmake}/cmake-#{CMAKE_VERSION}-Linux-i386/bin/cmake --version`
+      out = `ls -l #{path}`
+      topic "Done! Cmake path: #{path}:\n #{out}"
+
+      out = `#{path}/cmake --version`
       topic "CMake version: #{out}"
 
       # TODO cache the build output
