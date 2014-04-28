@@ -342,27 +342,18 @@ WARNING
 
       # TODO check for cached build output
 
-      topic "Installing cmake (#{CMAKE_VERSION})"
+      topic "Fetching cmake binary (#{CMAKE_VERSION})"
 
       FileUtils.mkdir_p(slug_vendor_cmake)
       Dir.chdir(slug_vendor_cmake) do
         instrument "ruby.fetch_cmake" do
-          @fetchers[:cmake].fetch_untar("cmake-#{CMAKE_VERSION}.tar.gz")
+          @fetchers[:cmake].fetch_untar("cmake-#{CMAKE_VERSION}-Linux-i386.tar.gz")
         end
       end
-      error "Couldn't fetch cmake (#{CMAKE_MINOR_VERSION}/cmake-#{CMAKE_VERSION}.tar.gz)!" unless $?.success?
+      error "Couldn't fetch cmake (cmake-#{CMAKE_VERSION}-Linux-i386.tar.gz)!" unless $?.success?
 
-      topic "Building cmake (#{CMAKE_VERSION})"
-
-      bootout = ""
-      makeout = ""
-      Dir.chdir("#{slug_vendor_cmake}/cmake-#{CMAKE_VERSION}") do
-        instrument "ruby.build_cmake" do
-          bootout = run("./bootstrap")
-          makeout = run("make")
-        end
-      end
-      error "Couldn't build cmake\nbootstrap:\n#{bootout}\n\nmake:\n#{makeout}\n" unless $?.success?
+      out = `ls #{slug_vendor_cmake}/cmake-#{CMAKE_VERSION}/bin`
+      topic "Done! Cmake path: #{slug_vendor_cmake}/cmake-#{CMAKE_VERSION}/bin\n #{out}"
 
       # TODO cache the build output
     end
