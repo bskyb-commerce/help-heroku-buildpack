@@ -361,7 +361,9 @@ WARNING
       out = `ls -l #{path}`
       topic "Done! Cmake path: #{path}:\n #{out}"
 
-      out = `#{path}/cmake --version`
+      system("export PATH=#{path}:$PATH")
+
+      out = `cmake --version`
       topic "CMake version: #{out}"
 
       # TODO cache the build output
