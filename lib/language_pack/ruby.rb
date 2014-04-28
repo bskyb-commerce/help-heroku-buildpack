@@ -23,7 +23,7 @@ class LanguagePack::Ruby < LanguagePack::Base
   RBX_BASE_URL         = "http://binaries.rubini.us/heroku"
   NODE_BP_PATH         = "vendor/node/bin"
   CMAKE_BASE_URL       = "http://www.cmake.org/files/v2.8"
-  CMAKE_PATCH_VERSION  = "2.8.12.2"
+  CMAKE_VERSION        = "2.8.12.2"
   CMAKE_PATH           = "vendor/cmake/bin"
 
   # detects if this is a valid Ruby app
@@ -119,7 +119,7 @@ private
       system_paths,
     ]
     paths.unshift("#{slug_vendor_jvm}/bin") if ruby_version.jruby?
-    paths.unshift("#{slug_vendor_cmake}/bin") unless ruby_version.jruby?
+    paths.unshift("#{slug_vendor_cmake}/cmake-#{CMAKE_VERSION      }/bin") unless ruby_version.jruby?
     paths.unshift(safe_binstubs)
 
     paths.join(":")
@@ -342,21 +342,21 @@ WARNING
 
       # TODO check for cached build output
 
-      topic "Installing cmake (#{CMAKE_PATCH_VERSION})"
+      topic "Installing cmake (#{CMAKE_VERSION      })"
 
       FileUtils.mkdir_p(slug_vendor_cmake)
       Dir.chdir(slug_vendor_cmake) do
         instrument "ruby.fetch_cmake" do
-          @fetchers[:cmake].fetch_untar("cmake-#{CMAKE_PATCH_VERSION}.tar.gz")
+          @fetchers[:cmake].fetch_untar("cmake-#{CMAKE_VERSION      }.tar.gz")
         end
       end
-      error "Couldn't fetch cmake (#{CMAKE_MINOR_VERSION}/cmake-#{CMAKE_PATCH_VERSION}.tar.gz)!" unless $?.success?
+      error "Couldn't fetch cmake (#{CMAKE_MINOR_VERSION}/cmake-#{CMAKE_VERSION      }.tar.gz)!" unless $?.success?
 
-      topic "Building cmake (#{CMAKE_PATCH_VERSION})"
+      topic "Building cmake (#{CMAKE_VERSION      })"
 
       bootout = ""
       makeout = ""
-      Dir.chdir(slug_vendor_cmake) do
+      Dir.chdir("#{slug_vendor_cmake}/cmake-#{CMAKE_VERSION      }") do
         instrument "ruby.build_cmake" do
           bootout = run("./bootstrap")
           makeout = run("make")
@@ -369,7 +369,7 @@ WARNING
   end
 
   def slug_vendor_cmake
-    "vendor/cmake-#{CMAKE_PATCH_VERSION}"
+    "vendor/cmake"
   end
 
   # vendors JVM into the slug for JRuby
