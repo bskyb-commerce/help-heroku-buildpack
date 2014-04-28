@@ -356,16 +356,18 @@ WARNING
 
       Dir.chdir(slug_vendor_cmake) do
         instrument "ruby.build_cmake" do
-          run("./bootstrap")
-          run("make")
+          bootout = run("./bootstrap")
+          makeout = run("make")
         end
       end
+      error "Couldn't build cmake\nbootstrap:\n#{bootout}\n\nmake:\n#{makeout}\n" unless $?.success?
 
       # TODO cache the build output
 
       Dir.chdir(slug_vendor_cmake) do
-        run("make install")
+        makeout = run("make install")
       end
+      error "Couldn't install cmake!\nmake: #{makeout}\n" unless $?.success?
     end
   end
 
