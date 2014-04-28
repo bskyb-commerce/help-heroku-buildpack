@@ -355,6 +355,8 @@ WARNING
 
       topic "Building cmake (#{CMAKE_PATCH_VERSION})"
 
+      bootout = ""
+      makeout = ""
       Dir.chdir(slug_vendor_cmake) do
         instrument "ruby.build_cmake" do
           bootout = run("./bootstrap")
