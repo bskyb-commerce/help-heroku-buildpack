@@ -122,6 +122,8 @@ private
     paths.unshift(File.expand_path("#{slug_vendor_cmake}/cmake-#{CMAKE_VERSION}-Linux-i386/bin")) unless ruby_version.jruby?
     paths.unshift(safe_binstubs)
 
+    topic "Setting PATH to: #{paths.inspect}"
+
     paths.join(":")
   end
 
