@@ -363,8 +363,9 @@ WARNING
 
       # TODO cache the build output
 
-      # install cmake to path
-      run("ln -s #{slug_vendor_cmake}/bin/cmake bin/cmake")
+      Dir.chdir(slug_vendor_cmake) do
+        run("make install")
+      end
     end
   end
 
