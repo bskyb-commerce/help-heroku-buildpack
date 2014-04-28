@@ -361,7 +361,7 @@ WARNING
       out = `ls -l #{path}`
       topic "Done! Cmake path: #{path}:\n #{out}"
 
-      ENV["PATH"] += path
+      ENV["PATH"] += ":#{path}"
 
       out = `echo $PATH`
       topic "PATH: #{out}"
