@@ -361,7 +361,7 @@ WARNING
       out = `ls -l #{path}`
       topic "Done! Cmake path: #{path}:\n #{out}"
 
-      system("export PATH=#{path}:$PATH")
+      system("export PATH=\"$PATH:#{path}\"")
 
       out = `echo $PATH`
       topic "PATH: #{out}"
