@@ -361,7 +361,9 @@ WARNING
       out = `ls -l #{path}`
       topic "Done! Cmake path: #{path}:\n #{out}"
 
+      topic "exporting path using: export PATH=\"$PATH:#{path}\""
       system("export PATH=\"$PATH:#{path}\"")
+      error "Could not export PATH" unless $?.success?
 
       out = `echo $PATH`
       topic "PATH: #{out}"
