@@ -363,6 +363,9 @@ WARNING
 
       system("export PATH=#{path}:$PATH")
 
+      out = `echo $PATH`
+      topic "PATH: #{out}"
+
       out = `cmake --version`
       topic "CMake version: #{out}"
 
