@@ -22,6 +22,10 @@ class LanguagePack::Ruby < LanguagePack::Base
   DEFAULT_RUBY_VERSION = "ruby-2.0.0"
   RBX_BASE_URL         = "http://binaries.rubini.us/heroku"
   NODE_BP_PATH         = "vendor/node/bin"
+  CMAKE_BASE_URL       = "http://www.cmake.org/files/"
+  CMAKE_MINOR_VERSION  = "v2.8"
+  CMAKE_PATCH_VERSION  = "2.8.12.2"
+  CMAKE_PATH           = "vendor/cmake/bin"
 
   # detects if this is a valid Ruby app
   # @return [Boolean] true if it's a Ruby app
@@ -43,6 +47,7 @@ class LanguagePack::Ruby < LanguagePack::Base
     super(build_path, cache_path)
     @fetchers[:jvm] = LanguagePack::Fetcher.new(JVM_BASE_URL)
     @fetchers[:rbx] = LanguagePack::Fetcher.new(RBX_BASE_URL)
+    @fetchers[:cmake] = LanguagePack::Fetcher.new(CMAKE_BASE_URL)
   end
 
   def name
@@ -85,6 +90,7 @@ class LanguagePack::Ruby < LanguagePack::Base
       Dir.chdir(build_path)
       remove_vendor_bundle
       install_ruby
+      install_cmake
       install_jvm
       setup_language_pack_environment
       setup_profiled
@@ -328,6 +334,42 @@ WARNING
 
   def new_app?
     @new_app ||= !File.exist?("vendor/heroku")
+  end
+
+  def install_cmake
+    instrument 'ruby.install_cmake' do
+      return if ruby_version.jruby?
+
+      # TODO check for cached build output
+
+      topic "Installing cmake (#{CMAKE_PATCH_VERSION})"
+
+      FileUtils.mkdir_p(slug_vendor_cmake)
+      Dir.chdir(slug_vendor_cmake) do
+        instrument "ruby.fetch_cmake" do
+          @fetchers[:cmake].fetch_untar("#{CMAKE_MINOR_VERSION}/cmake-#{CMAKE_PATCH_VERSION}.tar.gz")
+        end
+      end
+      error "Couldn't fetch cmake (#{CMAKE_MINOR_VERSION}/cmake-#{CMAKE_PATCH_VERSION}.tar.gz)!" unless $?.success?
+
+      topic "Building cmake (#{CMAKE_PATCH_VERSION})"
+
+      Dir.chdir(slug_vendor_cmake) do
+        instrument "ruby.build_cmake" do
+          run("./bootstrap")
+          run("make")
+        end
+      end
+
+      # TODO cache the build output
+
+      # install cmake to path
+      run("ln -s #{slug_vendor_cmake}/bin/cmake bin/cmake")
+    end
+  end
+
+  def slug_vendor_cmake
+    "vendor/cmake-#{CMAKE_PATCH_VERSION}"
   end
 
   # vendors JVM into the slug for JRuby
