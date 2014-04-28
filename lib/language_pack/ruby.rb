@@ -22,8 +22,8 @@ class LanguagePack::Ruby < LanguagePack::Base
   DEFAULT_RUBY_VERSION = "ruby-2.0.0"
   RBX_BASE_URL         = "http://binaries.rubini.us/heroku"
   NODE_BP_PATH         = "vendor/node/bin"
-  CMAKE_BASE_URL       = "http://www.cmake.org/files/v2.8"
-  CMAKE_VERSION        = "2.8.12.2"
+  CMAKE_BASE_URL       = "https://github.com/redbadger/heroku-buildpack-ruby/raw/master/vendor"
+  CMAKE_VERSION        = "2.8.12.2-heroku"
   CMAKE_PATH           = "vendor/cmake/bin"
 
   # detects if this is a valid Ruby app
@@ -119,7 +119,6 @@ private
       system_paths,
     ]
     paths.unshift("#{slug_vendor_jvm}/bin") if ruby_version.jruby?
-    paths.unshift(File.expand_path("#{slug_vendor_cmake}/cmake-#{CMAKE_VERSION}-Linux-i386/bin")) unless ruby_version.jruby?
     paths.unshift(safe_binstubs)
 
     topic "Setting PATH to: #{paths.inspect}"
@@ -349,15 +348,15 @@ WARNING
       FileUtils.mkdir_p(slug_vendor_cmake)
       Dir.chdir(slug_vendor_cmake) do
         instrument "ruby.fetch_cmake" do
-          @fetchers[:cmake].fetch_untar("cmake-#{CMAKE_VERSION}-Linux-i386.tar.gz")
+          @fetchers[:cmake].fetch_untar("cmake-#{CMAKE_VERSION}.tar.gz")
 
-          system("chmod a+rx cmake-#{CMAKE_VERSION}-Linux-i386/bin")
-          system("chmod go+rx cmake-#{CMAKE_VERSION}-Linux-i386/bin/*")
+          system("chmod a+rx cmake-#{CMAKE_VERSION}/bin")
+          system("chmod go+rx cmake-#{CMAKE_VERSION}/bin/*")
         end
       end
-      error "Couldn't fetch cmake (cmake-#{CMAKE_VERSION}-Linux-i386.tar.gz)!" unless $?.success?
+      error "Couldn't fetch cmake (cmake-#{CMAKE_VERSION}.tar.gz)!" unless $?.success?
 
-      path = File.expand_path("#{slug_vendor_cmake}/cmake-#{CMAKE_VERSION}-Linux-i386/bin")
+      path = File.expand_path("#{slug_vendor_cmake}/cmake-#{CMAKE_VERSION}/bin")
 
       out = `ls -l #{path}`
       topic "Done! Cmake path: #{path}:\n #{out}"
