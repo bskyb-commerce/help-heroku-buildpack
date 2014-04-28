@@ -120,6 +120,7 @@ private
       system_paths,
     ]
     paths.unshift("#{slug_vendor_jvm}/bin") if ruby_version.jruby?
+    paths.unshift("#{slug_vendor_cmake}/bin") unless ruby_version.jruby?
     paths.unshift(safe_binstubs)
 
     paths.join(":")
@@ -363,11 +364,6 @@ WARNING
       error "Couldn't build cmake\nbootstrap:\n#{bootout}\n\nmake:\n#{makeout}\n" unless $?.success?
 
       # TODO cache the build output
-
-      Dir.chdir(slug_vendor_cmake) do
-        makeout = run("make install")
-      end
-      error "Couldn't install cmake!\nmake: #{makeout}\n" unless $?.success?
     end
   end
 
