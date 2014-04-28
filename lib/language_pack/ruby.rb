@@ -119,7 +119,7 @@ private
       system_paths,
     ]
     paths.unshift("#{slug_vendor_jvm}/bin") if ruby_version.jruby?
-    paths.unshift("#{slug_vendor_cmake}/cmake-#{CMAKE_VERSION}/bin") unless ruby_version.jruby?
+    paths.unshift("#{slug_vendor_cmake}/cmake-#{CMAKE_VERSION}-Linux-i386/bin") unless ruby_version.jruby?
     paths.unshift(safe_binstubs)
 
     paths.join(":")
@@ -352,8 +352,8 @@ WARNING
       end
       error "Couldn't fetch cmake (cmake-#{CMAKE_VERSION}-Linux-i386.tar.gz)!" unless $?.success?
 
-      out = `ls #{slug_vendor_cmake}/cmake-#{CMAKE_VERSION}/bin`
-      topic "Done! Cmake path: #{slug_vendor_cmake}/cmake-#{CMAKE_VERSION}/bin\n #{out}"
+      out = `ls #{slug_vendor_cmake}/cmake-#{CMAKE_VERSION}-Linux-i386/bin`
+      topic "Done! Cmake path: #{slug_vendor_cmake}/cmake-#{CMAKE_VERSION}-Linux-i386/bin\n #{out}"
 
       # TODO cache the build output
     end
