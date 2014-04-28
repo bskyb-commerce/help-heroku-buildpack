@@ -350,13 +350,13 @@ WARNING
         instrument "ruby.fetch_cmake" do
           @fetchers[:cmake].fetch_untar("cmake-#{CMAKE_VERSION}.tar.gz")
 
-          system("chmod a+rx cmake-#{CMAKE_VERSION}/bin")
-          system("chmod go+rx cmake-#{CMAKE_VERSION}/bin/*")
+          system("chmod a+rx bin")
+          system("chmod go+rx bin/*")
         end
       end
       error "Couldn't fetch cmake (cmake-#{CMAKE_VERSION}.tar.gz)!" unless $?.success?
 
-      path = File.expand_path("#{slug_vendor_cmake}/cmake-#{CMAKE_VERSION}/bin")
+      path = File.expand_path("#{slug_vendor_cmake}/bin")
 
       out = `ls -l #{path}`
       topic "Done! Cmake path: #{path}:\n #{out}"
