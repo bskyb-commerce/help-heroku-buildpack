@@ -119,7 +119,7 @@ private
       system_paths,
     ]
     paths.unshift("#{slug_vendor_jvm}/bin") if ruby_version.jruby?
-    paths.unshift("#{slug_vendor_cmake}/cmake-#{CMAKE_VERSION}-Linux-i386/bin") unless ruby_version.jruby?
+    paths.unshift(File.expand_path("#{slug_vendor_cmake}/cmake-#{CMAKE_VERSION}-Linux-i386/bin")) unless ruby_version.jruby?
     paths.unshift(safe_binstubs)
 
     paths.join(":")
@@ -354,6 +354,9 @@ WARNING
 
       out = `ls #{slug_vendor_cmake}/cmake-#{CMAKE_VERSION}-Linux-i386/bin`
       topic "Done! Cmake path: #{slug_vendor_cmake}/cmake-#{CMAKE_VERSION}-Linux-i386/bin\n #{out}"
+
+      out = `#{slug_vendor_cmake}/cmake-#{CMAKE_VERSION}-Linux-i386/bin/cmake --version`
+      topic "CMake version: #{out}"
 
       # TODO cache the build output
     end
