@@ -366,6 +366,9 @@ WARNING
       out = `echo $PATH`
       topic "PATH: #{out}"
 
+      out = `stat #{path}/cmake`
+      topic "Stat: #{out}"
+
       out = `cmake --version`
       topic "CMake version: #{out}"
 
