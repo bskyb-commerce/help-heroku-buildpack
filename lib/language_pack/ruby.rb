@@ -22,7 +22,7 @@ class LanguagePack::Ruby < LanguagePack::Base
   DEFAULT_RUBY_VERSION = "ruby-2.0.0"
   RBX_BASE_URL         = "http://binaries.rubini.us/heroku"
   NODE_BP_PATH         = "vendor/node/bin"
-  CMAKE_BASE_URL       = "https://github.com/redbadger/heroku-buildpack-ruby/raw/master/vendor"
+  CMAKE_BASE_URL       = "https://raw.githubusercontent.com/redbadger/heroku-buildpack-ruby/master/vendor" # FIXME store in better place
   CMAKE_VERSION        = "2.8.12.2-heroku"
   CMAKE_PATH           = "vendor/cmake/bin"
 
