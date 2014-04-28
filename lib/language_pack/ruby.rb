@@ -370,7 +370,7 @@ WARNING
       out = `stat #{path}/cmake`
       topic "Stat: #{out}"
 
-      out = `cmake --version`
+      out = `#{path}/cmake --version`
       topic "CMake version: #{out}"
 
       # TODO cache the build output
