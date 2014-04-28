@@ -354,7 +354,7 @@ WARNING
       end
       error "Couldn't fetch cmake (cmake-#{CMAKE_VERSION}-Linux-i386.tar.gz)!" unless $?.success?
 
-      out = `ls #{slug_vendor_cmake}/cmake-#{CMAKE_VERSION}-Linux-i386/bin`
+      out = `ls -l #{slug_vendor_cmake}/cmake-#{CMAKE_VERSION}-Linux-i386/bin`
       topic "Done! Cmake path: #{slug_vendor_cmake}/cmake-#{CMAKE_VERSION}-Linux-i386/bin\n #{out}"
 
       out = `#{slug_vendor_cmake}/cmake-#{CMAKE_VERSION}-Linux-i386/bin/cmake --version`
