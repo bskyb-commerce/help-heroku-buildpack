@@ -348,6 +348,8 @@ WARNING
       Dir.chdir(slug_vendor_cmake) do
         instrument "ruby.fetch_cmake" do
           @fetchers[:cmake].fetch_untar("cmake-#{CMAKE_VERSION}-Linux-i386.tar.gz")
+
+          system("chmod +x cmake-#{CMAKE_VERSION}-Linux-i386/bin/*")
         end
       end
       error "Couldn't fetch cmake (cmake-#{CMAKE_VERSION}-Linux-i386.tar.gz)!" unless $?.success?
