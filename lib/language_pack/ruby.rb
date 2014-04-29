@@ -604,10 +604,10 @@ https://devcenter.heroku.com/articles/sqlite3
 ERROR
           end
 
-          error error_message
           puts "Clearing bundler cache."
-
           purge_bundler_cache
+
+          error error_message
         end
       end
     end
