@@ -121,8 +121,6 @@ private
     paths.unshift("#{slug_vendor_jvm}/bin") if ruby_version.jruby?
     paths.unshift(safe_binstubs)
 
-    topic "Setting PATH to: #{paths.inspect}"
-
     paths.join(":")
   end
 
