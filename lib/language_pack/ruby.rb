@@ -357,20 +357,7 @@ WARNING
       error "Couldn't fetch cmake (cmake-#{CMAKE_VERSION}.tar.gz)!" unless $?.success?
 
       path = File.expand_path("#{slug_vendor_cmake}/bin")
-
-      out = `ls -l #{path}`
-      topic "Done! Cmake path: #{path}:\n #{out}"
-
       ENV["PATH"] += ":#{path}"
-
-      out = `echo $PATH`
-      topic "PATH: #{out}"
-
-      out = `stat #{path}/cmake`
-      topic "Stat: #{out}"
-
-      out = `#{path}/cmake --version`
-      topic "CMake version: #{out}"
 
       # TODO cache the build output
     end
@@ -526,7 +513,7 @@ WARNING
         bundle_without = env("BUNDLE_WITHOUT") || "development:test"
         bundle_bin     = "bundle"
         bundle_command = "#{bundle_bin} install --without #{bundle_without} --path vendor/bundle --binstubs #{bundler_binstubs_path}"
-        bundle_command << " -j4"
+        bundle_command << " -j1" # unfortunately, we can't handle parallel installs with rugged-redis
 
         if bundler.windows_gemfile_lock?
           warn(<<WARNING, inline: true)
