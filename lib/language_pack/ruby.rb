@@ -353,15 +353,21 @@ WARNING
           system("chmod go+rx bin/*")
         end
       end
-      error "Couldn't fetch cmake (cmake-#{CMAKE_VERSION}.tar.gz)!" unless $?.success?
+
+      unless $?.success?
+        error "Couldn't fetch cmake (cmake-#{CMAKE_VERSION}.tar.gz)!"
+        return
+      end
+
+      cache.store slug_vendor_cmake
 
       path = File.expand_path("#{slug_vendor_cmake}/bin")
       ENV["PATH"] += ":#{path}"
 
       out = `cmake --version`
-      puts "cmake command reported version: #{out}"
+      cache.clear slug_vendor_cmake if out.nil? || out.empty?
 
-      # TODO cache the build output
+      puts "cmake command reported version: #{out}"
     end
   end
 
@@ -598,8 +604,10 @@ https://devcenter.heroku.com/articles/sqlite3
 ERROR
           end
 
-          purge_bundler_cache
           error error_message
+          puts "Clearing bundler cache."
+
+          purge_bundler_cache
         end
       end
     end
