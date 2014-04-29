@@ -604,8 +604,8 @@ https://devcenter.heroku.com/articles/sqlite3
 ERROR
           end
 
-          puts "Clearing bundler cache."
-          purge_bundler_cache
+          puts "Clearing cache."
+          cache.clear("vendor")
 
           error error_message
         end
