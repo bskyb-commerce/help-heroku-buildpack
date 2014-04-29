@@ -612,6 +612,10 @@ ERROR
 
           FileUtils.rm_rf("vendor")
           cache.clear("vendor")
+
+          FileUtils.rm_rf(".bundle")
+          cache.clear(".bundle")
+
           purge_bundler_cache
 
           puts "Cleared."
