@@ -340,6 +340,7 @@ WARNING
       return if ruby_version.jruby?
 
       # TODO check for cached build output
+      cache.load slug_vendor_cmake
 
       topic "Fetching cmake binary (#{CMAKE_VERSION})"
 
@@ -356,6 +357,9 @@ WARNING
 
       path = File.expand_path("#{slug_vendor_cmake}/bin")
       ENV["PATH"] += ":#{path}"
+
+      out = `cmake --version`
+      puts "cmake command reported version: #{out}"
 
       # TODO cache the build output
     end
@@ -594,6 +598,7 @@ https://devcenter.heroku.com/articles/sqlite3
 ERROR
           end
 
+          purge_bundler_cache
           error error_message
         end
       end
