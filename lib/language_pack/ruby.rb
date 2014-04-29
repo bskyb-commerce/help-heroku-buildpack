@@ -365,7 +365,11 @@ WARNING
       ENV["PATH"] += ":#{path}"
 
       out = `cmake --version`
-      cache.clear slug_vendor_cmake if out.nil? || out.empty?
+
+      if out.nil? || out.empty?
+        cache.clear(slug_vendor_cmake)
+        FileUtils.rm_rf(slug_vendor_cmake)
+      end
 
       puts "cmake command reported version: #{out}"
     end
@@ -606,6 +610,7 @@ ERROR
 
           puts "Clearing cache."
           cache.clear("vendor")
+          FileUtils.rm_rf("vendor")
 
           error error_message
         end
