@@ -609,8 +609,12 @@ ERROR
           end
 
           puts "Clearing cache."
-          cache.clear("vendor")
+
           FileUtils.rm_rf("vendor")
+          cache.clear("vendor")
+          purge_bundler_cache
+
+          puts "Cleared."
 
           error error_message
         end
