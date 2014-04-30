@@ -611,12 +611,12 @@ ERROR
           puts "Clearing cache."
 
           FileUtils.rm_rf("vendor")
-          cache.clear("vendor")
+          Mkdir_p("vendor")
+
+          cache.store("vendor", true)
 
           FileUtils.rm_rf(".bundle")
           cache.clear(".bundle")
-
-          purge_bundler_cache
 
           puts "Cleared."
 
