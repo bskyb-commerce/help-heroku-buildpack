@@ -613,6 +613,7 @@ ERROR
 
             FileUtils.rm_rf("vendor/bundle")
             install_bundler_in_app
+            FileUtils.rm_rf("vendor/bundle/ruby/*/bundler")
 
             build_bundler(false)
           else
