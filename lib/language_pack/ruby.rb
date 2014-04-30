@@ -609,7 +609,7 @@ ERROR
           end
 
           if try_again
-            puts "Retrying without cache."
+            topic "Retrying without cache."
 
             FileUtils.rm_rf("vendor/bundle")
             install_bundler_in_app
