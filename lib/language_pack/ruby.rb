@@ -611,8 +611,7 @@ ERROR
           if try_again
             puts "Retrying without cache."
 
-            FileUtils.rm_rf("vendor")
-            FileUtils.rm_rf(".bundle")
+            FileUtils.rm_rf("vendor/bundle")
 
             build_bundler(false)
           else
