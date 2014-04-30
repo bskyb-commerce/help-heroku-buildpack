@@ -612,6 +612,7 @@ ERROR
             puts "Retrying without cache."
 
             FileUtils.rm_rf("vendor/bundle")
+            install_bundler_in_app
 
             build_bundler(false)
           else
