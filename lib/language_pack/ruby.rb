@@ -519,7 +519,7 @@ WARNING
   end
 
   # runs bundler to install the dependencies
-  def build_bundler
+  def build_bundler(try_again = true)
     instrument 'ruby.build_bundler' do
       log("bundle") do
         bundle_without = env("BUNDLE_WITHOUT") || "development:test"
@@ -545,7 +545,7 @@ WARNING
         end
 
         topic("Installing dependencies using #{bundler.version}")
-        load_bundler_cache
+        load_bundler_cache if try_again
 
         bundler_output = ""
         bundle_time    = nil
@@ -608,19 +608,16 @@ https://devcenter.heroku.com/articles/sqlite3
 ERROR
           end
 
-          puts "Clearing cache."
+          if try_again
+            puts "Retrying without cache."
 
-          FileUtils.rm_rf("vendor")
-          Mkdir_p("vendor")
+            FileUtils.rm_rf("vendor")
+            FileUtils.rm_rf(".bundle")
 
-          cache.store("vendor", true)
-
-          FileUtils.rm_rf(".bundle")
-          cache.clear(".bundle")
-
-          puts "Cleared."
-
-          error error_message
+            build_bundler(false)
+          else
+            error error_message
+          end
         end
       end
     end

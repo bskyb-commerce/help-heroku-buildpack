@@ -30,7 +30,7 @@ class LanguagePack::Rails4 < LanguagePack::Rails3
     end
   end
 
-  def build_bundler
+  def build_bundler(try_again = true)
     instrument "rails4.build_bundler" do
       super
     end
