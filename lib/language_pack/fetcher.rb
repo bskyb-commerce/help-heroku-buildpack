@@ -17,6 +17,7 @@ module LanguagePack
     end
 
     def fetch_untar(path)
+      puts "fetching: #{@host_url.join(path)}"
       curl = curl_command("#{@host_url.join(path)} -s -o")
       run!("#{curl} - | tar zxf -")
     end
